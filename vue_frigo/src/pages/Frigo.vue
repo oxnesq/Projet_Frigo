@@ -3,6 +3,8 @@ import {reactive, onMounted} from "vue";
 import Product from "@/Product";
 import FormView from "@/components/FormView.vue";
 import ListProducts from "@/components/ListProducts.vue";
+import FridgeView from "@/components/FridgeView.vue";
+import SearchView from "@/components/SearchView.vue";
 
 const listeProducts = reactive([]);
 
@@ -118,7 +120,7 @@ onMounted(() => {
 let numInList = 1;
 
 function setNumInList() {
-  numInList+=1;
+  numInList += 1;
 }
 
 
@@ -127,35 +129,41 @@ function setNumInList() {
 <template>
 
   <FormView class="formView" @addProduct="addProduct"></FormView>
+  <SearchView class="searchView" @getProduct="getProducts"></SearchView>
+
 
   <v-sheet class="listProd">
-    <ListProducts  v-for="product in listeProducts"
+    <h4>Votre frigo contient :</h4><br>
+    <ListProducts v-for="product in listeProducts"
                   :product="product"
 
                   @deleteProduct="deleteProduct"
                   @changeProduct="changeProduct"></ListProducts>
   </v-sheet>
 
-<!--
-  <v-row>
-    <v-col v-for="n in 2"
-           :key="n"
-           class="d-flex child-flex"
-           cols="3">
-      <Image :product></Image>
-      {{setNumInList }}
-    </v-col>
-  </v-row>
-  -->
+  <v-sheet>
+    <v-row>
+      <v-col v-for="n in 2"
+             :key="n"
+             class="d-flex child-flex"
+             cols="3">
+        <FridgeView
+                    :product="product"></FridgeView>
+
+      </v-col>
+    </v-row>
+  </v-sheet>
+
 
 </template>
 
 <style scoped>
 
-.listProd{
+.listProd {
   position: fixed;
-  left: 1000px;
+  left: 1100px;
   top: 100px;
 }
+
 
 </style>
