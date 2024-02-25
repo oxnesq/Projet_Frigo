@@ -18,7 +18,6 @@ const picture = ref("");
       <v-text-field
         v-model="qty"
         type="number"
-        style="width: 80px"
         density="compact"
         hide-details
         variant="outlined"
@@ -34,7 +33,6 @@ const picture = ref("");
 </template>
 
 <style>
-
 
 .mx-auto {
   position: fixed;

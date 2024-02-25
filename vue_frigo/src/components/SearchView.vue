@@ -2,7 +2,7 @@
 import {ref} from "vue";
 
 defineProps(["product"])
-defineEmits(["addProduct", "deleteProduct", "changeProduct"]);
+defineEmits(["getProduct"]);
 
 const search = ref("");
 </script>
@@ -10,7 +10,7 @@ const search = ref("");
 
 
   <v-sheet class="searchClass">
-    <form @submit.prevent="$event => $emit('',search)">
+    <form @submit.prevent="$event => $emit('getProduct',search)">
       <h4>Rechercher un produit</h4><br>
       <v-text-field prepend-icon="mdi-magnify" v-model="search" label="Rechercher" required></v-text-field>
       <v-btn type="submit">Submit</v-btn>

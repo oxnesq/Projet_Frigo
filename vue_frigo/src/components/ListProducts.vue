@@ -8,14 +8,16 @@ defineEmits(["deleteProduct", "changeProduct"]);
 </script>
 
 <template>
-  <v-row>
-    <Image :product="product"></Image>
-    <p> x{{ product.qty }} </p>
-    <v-btn @click="$emit('changeProduct',product,'-')" class="but">-</v-btn>
-    <v-btn @click="$emit('changeProduct',product,'+')" class="but">+</v-btn>
-    <v-btn @click="$emit('deleteProduct',product.id)" class="but"><img src="../pics/Bin.png" alt="../pics/Bin.png"
-                                                                       height="15"/></v-btn>
-  </v-row>
+  <v-col>
+    <v-row>
+      <Image :product="product"></Image>
+      <p> x{{ product.qty }} </p>
+      <v-btn @click="$emit('changeProduct',product,'-')" class="but">-</v-btn>
+      <v-btn @click="$emit('changeProduct',product,'+')" class="but">+</v-btn>
+      <v-btn @click="$emit('deleteProduct',product.id)" class="but"><img src="../pics/Bin.png" alt="../pics/Bin.png"
+                                                                         height="15"/></v-btn>
+    </v-row>
+  </v-col>
 
 
 </template>

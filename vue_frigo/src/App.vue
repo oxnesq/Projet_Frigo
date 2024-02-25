@@ -4,10 +4,10 @@ import Frigo from "@/pages/Frigo.vue";
 </script>
 
 <template>
-
-    <h3>Frigo de Oceane</h3>
+<v-app>
+<!--    <h3>Frigo de Oceane</h3>-->
   <Frigo class="fridge"></Frigo>
-
+</v-app>
 
 </template>
 

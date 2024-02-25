@@ -1,10 +1,11 @@
 <script setup>
-import {reactive, onMounted} from "vue";
+import {reactive, onMounted, ref} from "vue";
 import Product from "@/Product";
 import FormView from "@/components/FormView.vue";
 import ListProducts from "@/components/ListProducts.vue";
-import FridgeView from "@/components/FridgeView.vue";
+
 import SearchView from "@/components/SearchView.vue";
+import Image from "@/components/Image.vue";
 
 const listeProducts = reactive([]);
 
@@ -32,7 +33,7 @@ function changeProduct(product, calcul) {
   const fetchOptions = {
     method: "PUT",
     headers: myHeaders,
-    body: JSON.stringify(product),
+    body: JSON.stringify({id: product.id, nom: product.name, qte: product.qty,photo : product.picture }),
   };
   // -- la req AJAX
   fetch(url, fetchOptions)
@@ -123,46 +124,95 @@ function setNumInList() {
   numInList += 1;
 }
 
+const drawerLeft = ref(false) // booléen pour afficher/cacher la zone de gauche
+const drawerRight = ref(false)
 
 </script>
 
 <template>
+<!--  <v-layout class="rounded rounded-md">-->
 
-  <FormView class="formView" @addProduct="addProduct"></FormView>
-  <SearchView class="searchView" @getProduct="getProducts"></SearchView>
+    <v-app-bar color="surface-variant" title="Frigo de Océane">
+      <template v-slot:prepend>
+        <!-- un clic sur l'icone cache/affiche la zone de menu de gauche -->
+        <v-app-bar-nav-icon @click.stop="drawerLeft = !drawerLeft"></v-app-bar-nav-icon>
+      </template>
+      <template v-slot:append>
+        <!-- un clic sur l'icone cache/affiche la zone de menu de gauche -->
+        <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"></v-app-bar-nav-icon>
+      </template>
+    </v-app-bar>
 
 
-  <v-sheet class="listProd">
-    <h4>Votre frigo contient :</h4><br>
-    <ListProducts v-for="product in listeProducts"
-                  :product="product"
+    <v-navigation-drawer style="min-width: 400px;" app v-model="drawerLeft">
 
-                  @deleteProduct="deleteProduct"
-                  @changeProduct="changeProduct"></ListProducts>
-  </v-sheet>
+      <FormView class="formView" @addProduct="addProduct"></FormView>
+      <SearchView class="searchView" @getProduct="getProducts"></SearchView>
 
-  <v-sheet>
-    <v-row>
-      <v-col v-for="n in 2"
-             :key="n"
-             class="d-flex child-flex"
-             cols="3">
-        <FridgeView
-                    :product="product"></FridgeView>
+    </v-navigation-drawer>
 
-      </v-col>
-    </v-row>
-  </v-sheet>
+    <v-navigation-drawer location="right" style="min-width: 350px;" app v-model="drawerRight">
 
+      <v-list>
+        <v-list-item class="listProd">
+          <h4>Votre frigo contient :</h4><br>
+          <ListProducts v-for="product in listeProducts"
+                        :product="product"
+
+                        @deleteProduct="deleteProduct"
+                        @changeProduct="changeProduct"></ListProducts>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main class="frigo-main">
+
+        <v-row class="d-flex_child-flex" align="center">
+          <v-col v-for="product in  listeProducts"
+                 :key="product.id"
+
+                 cols="10"
+                 sm="5"
+          >
+            <Image v-for="n in product.qty"
+              :product="product"></Image>
+
+          </v-col>
+        </v-row>
+    </v-main>
+<!--
+  </v-layout>
+-->
 
 </template>
 
 <style scoped>
 
-.listProd {
-  position: fixed;
-  left: 1100px;
-  top: 100px;
+.frigo-main {
+  background-image: url("../pics/fridge_open.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-align: center;
+  min-height: 300px;
+}
+
+.fridge {
+
+  background: transparent;
+  width: 300px;
+
+}
+
+.d-flex_child-flex {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%,-45%);
+}
+
+v-navigation-drawer{
+  background-color: bisque;
 }
 
 

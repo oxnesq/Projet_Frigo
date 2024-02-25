@@ -1,22 +1,32 @@
-<template>
+
+<script setup>
+defineProps(["product"])
+
+</script><template>
 
   <v-img v-if="product.havePic()"
          :src="`${product.picture}`"
          :alt="`${product.name}`"
-         height="55px"
-         width="55px"
+
          aspect-ratio="1"
          cover
          class="bg-grey-lighten-2"
   ></v-img>
-  <p v-if="!product.havePic()">{{ product.name }}</p>
+  <v-card class="nameCard" v-if="!product.havePic()">{{ product.name }}</v-card>
+  <br>
 </template>
 
-<script setup>
+<style scoped>
+.bg-grey-lighten-2{
+  height :60px;
+  width: 60px;
+}
 
+.nameCard{
+  width: 60px;
+}
 
-defineProps(["product"])
+</style>
 
-</script>
 
 
