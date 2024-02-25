@@ -7,8 +7,10 @@ const emit = defineEmits(["getProduct", "updateResearch"]);
 const search = ref("");
 
 function emitSearchProduct(search){
+/*
+  console.log(search)
+*/
   emit('updateResearch',search);
-  emit('getProduct',search);
 }
 
 watch(search,(newSearch)=>{emitSearchProduct(newSearch);})

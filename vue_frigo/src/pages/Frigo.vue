@@ -97,18 +97,22 @@ function addProduct(nom, qty, pic) {
 let research = "";
 
 function updateResearch(search){
+  console.log(search)
   research=search;
+  getProducts()
 }
 
 function getProducts() {
   const fetchOptions = {method: "GET"};
-
+  let searchUrl
   if (research!==""){
-    url += "?search="+research;
+    searchUrl = url + "?search="+research;
+  } else {
+    searchUrl = url;
   }
-  console.log(research);
+  console.log(url);
 
-  fetch(url, fetchOptions)
+  fetch(searchUrl, fetchOptions)
     .then((response) => {
       return response.json();
     })
@@ -164,7 +168,7 @@ const drawerRight = ref(false)
     <v-navigation-drawer style="min-width: 400px;" app v-model="drawerLeft">
 
       <FormView class="formView" @addProduct="addProduct"></FormView>
-      <SearchView class="searchView" @getProduct="getProducts" @updateReasearch="updateResearch"></SearchView>
+      <SearchView class="searchView" @getProduct="getProducts" @updateResearch="updateResearch"></SearchView>
 
     </v-navigation-drawer>
 
@@ -181,15 +185,18 @@ const drawerRight = ref(false)
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="frigo-main">
+    <v-main class="frigo-main" >
 
-        <v-row class="d-flex_child-flex" align="center">
+        <v-row class="d-flex_child-flex" align="center" >
           <v-col v-for="product in  listeProducts"
                  :key="product.id"
 
                  cols="10"
                  sm="5"
-          >
+                 >
+
+<!--                 style="max-height: 150px;"-->
+
             <Image v-for="n in product.qty"
               :product="product"></Image>
 

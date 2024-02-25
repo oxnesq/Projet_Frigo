@@ -7,12 +7,13 @@ defineEmits(["addProduct", "deleteProduct", "changeProduct"]);
 const name = ref("");
 const qty = ref("");
 const picture = ref("");
+
 </script>
 <template>
 
 
   <v-sheet class="mx-auto">
-    <form @submit.prevent="$event => $emit('addProduct',name,qty,picture)" class="from-style">
+    <form @submit.prevent="$event => $emit('addProduct',name,qty,picture)" >
       <h4>Nouveau Produit</h4><br>
       <v-text-field v-model="name" label="nom *" required></v-text-field>
       <v-text-field

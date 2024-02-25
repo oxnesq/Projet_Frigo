@@ -6,7 +6,7 @@ import Frigo from "@/pages/Frigo.vue";
 <template>
 <v-app>
 <!--    <h3>Frigo de Oceane</h3>-->
-  <Frigo class="fridge"></Frigo>
+  <Frigo></Frigo>
 </v-app>
 
 </template>
