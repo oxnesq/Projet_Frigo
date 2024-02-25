@@ -12,9 +12,7 @@ export default class Product {
 
 havePic(){
     let bo=true;
-  console.log(this._picture)
     if (this._picture===""){
-      console.log("bo=false")
       bo=false;
     }
     return bo;

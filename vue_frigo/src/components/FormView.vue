@@ -12,7 +12,7 @@ const picture = ref("");
 
 
   <v-sheet class="mx-auto">
-    <form @submit.prevent="$event => $emit('addProduct',name,qty,picture)">
+    <form @submit.prevent="$event => $emit('addProduct',name,qty,picture)" class="from-style">
       <h4>Nouveau Produit</h4><br>
       <v-text-field v-model="name" label="nom *" required></v-text-field>
       <v-text-field
@@ -25,7 +25,7 @@ const picture = ref("");
       ></v-text-field>
       <br>
       <v-text-field v-model="picture" label="photo"></v-text-field>
-      <v-btn type="submit">Submit</v-btn>
+      <v-btn type="submit" append-icon="mdi-check">Ajouter</v-btn>
     </form>
   </v-sheet>
 
@@ -40,4 +40,8 @@ const picture = ref("");
   top: 60px;
   width: 300px;
 }
+h4{
+  background-color: #E0F2F1;
+}
+
 </style>

@@ -1,26 +1,38 @@
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 defineProps(["product"])
-defineEmits(["getProduct"]);
+const emit = defineEmits(["getProduct", "updateResearch"]);
 
 const search = ref("");
+
+function emitSearchProduct(search){
+  emit('updateResearch',search);
+  emit('getProduct',search);
+}
+
+watch(search,(newSearch)=>{emitSearchProduct(newSearch);})
+
 </script>
 <template>
 
 
   <v-sheet class="searchClass">
-    <form @submit.prevent="$event => $emit('getProduct',search)">
+    <form @submit.prevent="$event => emitSearchProduct(search)">
       <h4>Rechercher un produit</h4><br>
-      <v-text-field prepend-icon="mdi-magnify" v-model="search" label="Rechercher" required></v-text-field>
-      <v-btn type="submit">Submit</v-btn>
+      <v-text-field v-model="search" label="Rechercher" ></v-text-field>
+      <v-btn icon="mdi-magnify" type="submit"></v-btn>
     </form>
   </v-sheet>
 
 
 </template>
 
-<style>
+<style scoped>
+
+h4{
+  background-color: #E0F2F1;
+}
 
 
 .searchClass {

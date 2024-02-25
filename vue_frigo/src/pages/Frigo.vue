@@ -10,7 +10,7 @@ import Image from "@/components/Image.vue";
 const listeProducts = reactive([]);
 
 // -- l'url de l'API
-const url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/24/produits";
+let url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/24/produits";
 
 // -- modif a product in the list
 function changeProduct(product, calcul) {
@@ -21,6 +21,9 @@ function changeProduct(product, calcul) {
 
   } else {
     product.setQty(+1);
+  }
+  if (product.qty===0){
+    deleteProduct(product.id)
   }
   console.log(product.qty)
 
@@ -91,23 +94,37 @@ function addProduct(nom, qty, pic) {
     .catch((error) => console.log(error));
 }
 
-// -- req AJAX pour récupérer les produits
-//    et les stocker dans le state listeC
+let research = "";
+
+function updateResearch(search){
+  research=search;
+}
+
 function getProducts() {
   const fetchOptions = {method: "GET"};
+
+  if (research!==""){
+    url += "?search="+research;
+  }
+  console.log(research);
+
   fetch(url, fetchOptions)
     .then((response) => {
       return response.json();
     })
     .then((dataJSON) => {
+/*
       console.log(dataJSON);
+*/
       // -- vider la liste des choses
       listeProducts.splice(0, listeProducts.length);
       // pour chaque donnée renvoyée par l'API
       //  créer un objet instance de la classe Chose
       //  et l'ajouter dans la liste listeC
       dataJSON.forEach((v) => listeProducts.push(new Product(v.id, v.nom, v.qte, v.photo)));
+/*
       console.log(listeProducts)
+*/
     })
     .catch((error) => console.log(error));
 }
@@ -132,7 +149,7 @@ const drawerRight = ref(false)
 <template>
 <!--  <v-layout class="rounded rounded-md">-->
 
-    <v-app-bar color="surface-variant" title="Frigo de Océane">
+    <v-app-bar color="teal-lighten-5" title="Frigo de Océane">
       <template v-slot:prepend>
         <!-- un clic sur l'icone cache/affiche la zone de menu de gauche -->
         <v-app-bar-nav-icon @click.stop="drawerLeft = !drawerLeft"></v-app-bar-nav-icon>
@@ -147,12 +164,11 @@ const drawerRight = ref(false)
     <v-navigation-drawer style="min-width: 400px;" app v-model="drawerLeft">
 
       <FormView class="formView" @addProduct="addProduct"></FormView>
-      <SearchView class="searchView" @getProduct="getProducts"></SearchView>
+      <SearchView class="searchView" @getProduct="getProducts" @updateReasearch="updateResearch"></SearchView>
 
     </v-navigation-drawer>
 
-    <v-navigation-drawer location="right" style="min-width: 350px;" app v-model="drawerRight">
-
+    <v-navigation-drawer location="right" style="min-width: 300px;" app v-model="drawerRight">
       <v-list>
         <v-list-item class="listProd">
           <h4>Votre frigo contient :</h4><br>
@@ -210,10 +226,5 @@ const drawerRight = ref(false)
   top: 45%;
   transform: translate(-50%,-45%);
 }
-
-v-navigation-drawer{
-  background-color: bisque;
-}
-
 
 </style>
