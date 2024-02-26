@@ -8,7 +8,8 @@ defineEmits(["deleteProduct", "changeProduct"]);
 </script>
 
 <template>
-  <v-col>
+  <v-sheet >
+  <v-col :cols="12" sm="9">
     <v-row >
       <Image :product="product" ></Image>
 
@@ -19,7 +20,7 @@ defineEmits(["deleteProduct", "changeProduct"]);
     </v-row><br>
   </v-col>
 
-
+  </v-sheet>
 </template>
 
 <style scoped>

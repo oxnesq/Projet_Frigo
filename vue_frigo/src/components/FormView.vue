@@ -2,18 +2,32 @@
 import {ref} from "vue";
 
 defineProps(["product"])
-defineEmits(["addProduct", "deleteProduct", "changeProduct"]);
+const emit = defineEmits(["addProduct","isALink"]);
 
 const name = ref("");
 const qty = ref("");
-const picture = ref("");
+const picture = ref("https://");
+
+function handleSubmit ()  {
+  if(emit("isALink",picture.value)!==false){
+    picture.value = "";
+  }
+  emit("addProduct", name.value, qty.value, picture.value);
+  resetFields();
+}
+
+function resetFields () {
+  name.value = "";
+  qty.value = "";
+  picture.value = "";
+}
 
 </script>
 <template>
 
 
   <v-sheet class="mx-auto">
-    <form @submit.prevent="$event => $emit('addProduct',name,qty,picture)" >
+    <form @submit.prevent="$event => handleSubmit()" >
       <h4>Nouveau Produit</h4><br>
       <v-text-field v-model="name" label="nom *" required></v-text-field>
       <v-text-field

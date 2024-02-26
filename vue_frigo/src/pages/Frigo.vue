@@ -6,26 +6,66 @@ import ListProducts from "@/components/ListProducts.vue";
 
 import SearchView from "@/components/SearchView.vue";
 import Image from "@/components/Image.vue";
+import AddPicProduct from "@/components/AddPicProduct.vue";
 
 const listeProducts = reactive([]);
 
 // -- l'url de l'API
 let url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/24/produits";
 
-// -- modif a product in the list
-function changeProduct(product, calcul) {
-  console.log(product);
 
+function witchCalcul(product, calcul){
   if (calcul === "-") {
     product.setQty(-1);
 
-  } else {
+  } else if (calcul==="+"){
     product.setQty(+1);
+    console.log(listeProducts)
   }
   if (product.qty===0){
     deleteProduct(product.id)
   }
-  console.log(product.qty)
+}
+
+
+function isALink(chaine){
+  //console.log(chaine.substr(0, 8))
+  let bo=false;
+  if (chaine.substr(0, 8)==="https://")
+    bo=true;
+  return bo
+}
+/*
+function changeToProduct(name){
+
+  let newProduct;
+  for (let prod in listeProducts){
+    //console.log(name+" it is "+prod.name)
+    if (name===prod.name){
+
+      newProduct=prod;
+      console.log(newProduct);
+    }
+  }
+  return newProduct;
+}
+*/
+
+
+// -- modif a product in the list
+function changeProduct(product, other) {
+  //console.log(product);
+
+  witchCalcul(product, other);
+
+ /* console.log(product)
+  if (!(product instanceof Product)){
+    product = changeToProduct(product);
+    console.log(product)
+  }
+  if (isALink(other)){
+    product.picture=other;
+  }*/
 
 
   // -- entête http pour la req AJAX
@@ -97,7 +137,7 @@ function addProduct(nom, qty, pic) {
 let research = "";
 
 function updateResearch(search){
-  console.log(search)
+  //console.log(search)
   research=search;
   getProducts()
 }
@@ -110,7 +150,7 @@ function getProducts() {
   } else {
     searchUrl = url;
   }
-  console.log(url);
+  //console.log(url);
 
   fetch(searchUrl, fetchOptions)
     .then((response) => {
@@ -120,7 +160,7 @@ function getProducts() {
 /*
       console.log(dataJSON);
 */
-      // -- vider la liste des choses
+      // -- vider la liste des produits
       listeProducts.splice(0, listeProducts.length);
       // pour chaque donnée renvoyée par l'API
       //  créer un objet instance de la classe Chose
@@ -145,8 +185,8 @@ function setNumInList() {
   numInList += 1;
 }
 
-const drawerLeft = ref(false) // booléen pour afficher/cacher la zone de gauche
-const drawerRight = ref(false)
+const drawerLeft = ref(true) // booléen pour afficher/cacher la zone de gauche
+const drawerRight = ref(true)
 
 </script>
 
@@ -156,18 +196,18 @@ const drawerRight = ref(false)
     <v-app-bar color="teal-lighten-5" title="Frigo de Océane">
       <template v-slot:prepend>
         <!-- un clic sur l'icone cache/affiche la zone de menu de gauche -->
-        <v-app-bar-nav-icon @click.stop="drawerLeft = !drawerLeft"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click.stop="drawerLeft = !drawerLeft"><v-icon>mdi-food-outline</v-icon></v-app-bar-nav-icon>
       </template>
       <template v-slot:append>
         <!-- un clic sur l'icone cache/affiche la zone de menu de gauche -->
-        <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon  @click.stop="drawerRight = !drawerRight"><v-icon>mdi-fridge-outline</v-icon></v-app-bar-nav-icon>
       </template>
     </v-app-bar>
 
 
     <v-navigation-drawer style="min-width: 400px;" app v-model="drawerLeft">
 
-      <FormView class="formView" @addProduct="addProduct"></FormView>
+      <FormView class="formView" @addProduct="addProduct" @isALink="isALink"></FormView>
       <SearchView class="searchView" @getProduct="getProducts" @updateResearch="updateResearch"></SearchView>
 
     </v-navigation-drawer>
@@ -180,28 +220,31 @@ const drawerRight = ref(false)
                         :product="product"
 
                         @deleteProduct="deleteProduct"
-                        @changeProduct="changeProduct"></ListProducts>
+                        @changeProduct="changeProduct" style="left: 60px"></ListProducts>
+
+
+<!--
+          <AddPicProduct @changeProduct="changeProduct"></AddPicProduct>
+-->
+
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+  </v-navigation-drawer>
 
     <v-main class="frigo-main" >
-
-        <v-row class="d-flex_child-flex" align="center" >
-          <v-col v-for="product in  listeProducts"
-                 :key="product.id"
-
-                 cols="10"
-                 sm="5"
-                 >
-
-<!--                 style="max-height: 150px;"-->
-
-            <Image v-for="n in product.qty"
-              :product="product"></Image>
-
-          </v-col>
+        <v-col class="d-flex_child-flex"  >
+          <v-row v-for="product in  listeProducts" :key="product.id"
+                 cols="12"
+                 sm="6"
+                 md="3"
+                 lg="2"
+                 xl="2">
+            <v-card class="card-style" v-for="n in product.qty">
+              <Image
+                     :product="product" cover></Image>
+            </v-card>
         </v-row>
+        </v-col>
     </v-main>
 <!--
   </v-layout>
@@ -220,18 +263,16 @@ const drawerRight = ref(false)
   min-height: 300px;
 }
 
-.fridge {
-
-  background: transparent;
-  width: 300px;
-
-}
-
 .d-flex_child-flex {
   position: absolute;
   left: 50%;
-  top: 45%;
-  transform: translate(-50%,-45%);
+  top: 60%;
+  transform: translate(-10%,-60%);
+}
+
+.card-style{
+  margin-right: 5px;
+  margin-bottom: 25px;
 }
 
 </style>
