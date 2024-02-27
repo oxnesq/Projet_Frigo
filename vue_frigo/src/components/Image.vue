@@ -14,7 +14,7 @@ defineProps(["product"])
          cover
          class="bg-grey-lighten-2"
   ></v-img>
-  <v-card class="nameCard" v-if="!product.havePic()">{{ product.name }}</v-card>
+  <v-card class="nameCard" v-if="!product.havePic()" width="80px">{{ product.name }}</v-card>
 
 </template>
 
