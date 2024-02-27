@@ -29,7 +29,7 @@ function resetFields () {
   <v-sheet class="mx-auto">
     <form @submit.prevent="$event => handleSubmit()" >
       <h4>Nouveau Produit</h4><br>
-      <v-text-field v-model="name" label="nom *" required></v-text-field>
+      <v-text-field v-model="name" label="nom *" required variant="outlined"></v-text-field>
       <v-text-field
         v-model="qty"
         type="number"
@@ -39,7 +39,7 @@ function resetFields () {
         label="qte *" required
       ></v-text-field>
       <br>
-      <v-text-field v-model="picture" label="photo"></v-text-field>
+      <v-text-field v-model="picture" label="photo" variant="outlined"></v-text-field>
       <v-btn type="submit" append-icon="mdi-check">Ajouter</v-btn>
     </form>
   </v-sheet>

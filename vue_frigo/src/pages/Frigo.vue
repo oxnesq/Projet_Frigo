@@ -13,18 +13,22 @@ const listeProducts = reactive([]);
 // -- l'url de l'API
 let url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/24/produits";
 
-
 function witchCalcul(product, calcul){
   if (calcul === "-") {
     product.setQty(-1);
 
   } else if (calcul==="+"){
-    product.setQty(+1);
-    console.log(listeProducts)
+    if(product.qty<5){
+      product.setQty(+1);
+    } else {
+      alert("Le frigo est pleins");
+    }
   }
   if (product.qty===0){
     deleteProduct(product.id)
   }
+
+  changeProduct(product,calcul);
 }
 
 
@@ -35,38 +39,25 @@ function isALink(chaine){
     bo=true;
   return bo
 }
-/*
-function changeToProduct(name){
 
-  let newProduct;
-  for (let prod in listeProducts){
-    //console.log(name+" it is "+prod.name)
-    if (name===prod.name){
+function changeLinkProduct(productName, link){
+  console.log(listeProducts)
 
-      newProduct=prod;
-      console.log(newProduct);
+  for (let i=0;i<=listeProducts.length;i++){
+    let prod=listeProducts[i];
+    if (productName===prod.name){
+      if (isALink(link)){
+        prod.picture=link;
+        changeProduct(prod)
+      }
     }
   }
-  return newProduct;
 }
-*/
+
 
 
 // -- modif a product in the list
-function changeProduct(product, other) {
-  //console.log(product);
-
-  witchCalcul(product, other);
-
- /* console.log(product)
-  if (!(product instanceof Product)){
-    product = changeToProduct(product);
-    console.log(product)
-  }
-  if (isALink(other)){
-    product.picture=other;
-  }*/
-
+function changeProduct(product) {
 
   // -- entête http pour la req AJAX
   let myHeaders = new Headers();
@@ -78,6 +69,7 @@ function changeProduct(product, other) {
     headers: myHeaders,
     body: JSON.stringify({id: product.id, nom: product.name, qte: product.qty,photo : product.picture }),
   };
+  console.log(product)
   // -- la req AJAX
   fetch(url, fetchOptions)
     .then((response) => {
@@ -114,24 +106,29 @@ function deleteProduct(id) {
 function addProduct(nom, qty, pic) {
   console.log(nom, qty, pic);
 
-  let myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  // --  le libelle de la nouvelle chose est envoyé au serveur
-  //  via le body de la req AJAX
-  const fetchOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({nom: nom, qte: qty, photo: pic}),
-  };
-  fetch(url, fetchOptions)
-    .then((response) => {
-      return response.json();
-    })
-    .then((dataJSON) => {
-      console.log(dataJSON);
-      getProducts();
-    })
-    .catch((error) => console.log(error));
+  if(listeProducts.length<5){
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    // --  le libelle de la nouvelle chose est envoyé au serveur
+    //  via le body de la req AJAX
+    const fetchOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({nom: nom, qte: qty, photo: pic}),
+    };
+    fetch(url, fetchOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((dataJSON) => {
+        console.log(dataJSON);
+        getProducts();
+      })
+      .catch((error) => console.log(error));
+  } else{
+    alert("Le frigo est pleins");
+  }
+
 }
 
 let research = "";
@@ -213,19 +210,20 @@ const drawerRight = ref(true)
     </v-navigation-drawer>
 
     <v-navigation-drawer location="right" style="min-width: 300px;" app v-model="drawerRight">
-      <v-list>
-        <v-list-item class="listProd">
+
+      <v-list >
+        <v-list-item class="listProd"  >
           <h4>Votre frigo contient :</h4><br>
           <ListProducts v-for="product in listeProducts"
                         :product="product"
 
                         @deleteProduct="deleteProduct"
-                        @changeProduct="changeProduct" style="left: 60px"></ListProducts>
+                        @changeProduct="witchCalcul" style="left: 60px"></ListProducts>
 
 
-<!--
-          <AddPicProduct @changeProduct="changeProduct"></AddPicProduct>
--->
+
+          <AddPicProduct @changeProduct="changeLinkProduct"></AddPicProduct>
+
 
         </v-list-item>
       </v-list>
@@ -241,7 +239,7 @@ const drawerRight = ref(true)
                  xl="2">
             <v-card class="card-style" v-for="n in product.qty">
               <Image
-                     :product="product" cover></Image>
+                     :product="product"></Image>
             </v-card>
         </v-row>
         </v-col>

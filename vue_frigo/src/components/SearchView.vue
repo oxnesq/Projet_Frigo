@@ -19,8 +19,13 @@ watch(search,(newSearch)=>{emitSearchProduct(newSearch);})
   <v-sheet class="searchClass">
     <form @submit.prevent="$event => emitSearchProduct(search)">
       <h4>Rechercher un produit</h4><br>
-      <v-text-field v-model="search" label="Rechercher" ></v-text-field>
-      <v-btn icon="mdi-magnify" type="submit"></v-btn>
+      <v-col>
+        <v-row>
+          <v-text-field v-model="search" label="Rechercher" ></v-text-field>
+          <v-btn icon="mdi-magnify" type="submit"></v-btn>
+      </v-row>
+      </v-col>
+
     </form>
   </v-sheet>
 

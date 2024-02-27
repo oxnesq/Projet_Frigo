@@ -4,7 +4,7 @@ defineProps(["product"])
 
 </script>
 
-<template v-slot:activator="{ props: activatorProps }">
+<template >
 
   <v-img v-if="product.havePic()"
          :src="`${product.picture}`"

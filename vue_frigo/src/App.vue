@@ -4,8 +4,8 @@ import Frigo from "@/pages/Frigo.vue";
 </script>
 
 <template>
-<v-app>
-<!--    <h3>Frigo de Oceane</h3>-->
+<v-app >
+  <!--    <h3>Frigo de Oceane</h3>-->
   <Frigo></Frigo>
 </v-app>
 

@@ -38,6 +38,12 @@ havePic(){
   get picture() {
     return this._picture;
   }
+
+
+  set picture(value) {
+    this._picture = value;
+  }
+
   setQty(number){
     this._qty += number;
   }

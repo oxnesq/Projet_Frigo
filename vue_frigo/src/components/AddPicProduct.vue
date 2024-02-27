@@ -20,12 +20,12 @@ function resetFields () {
 <template>
 
 
-  <v-sheet class="mx-auto">
+  <v-sheet class="style-class">
     <form @submit.prevent="$event => handleSubmit()" >
       <h4>Ajouter une photo à un produit</h4><br>
-      <v-text-field v-model="product" label="nom" required></v-text-field>
-      <v-text-field v-model="picture" label="photo"></v-text-field>
-      <v-btn type="submit" append-icon="mdi-check">Ajouter</v-btn>
+      <v-text-field v-model="product" label="nom" required variant="outlined"></v-text-field>
+      <v-text-field v-model="picture" label="photo" variant="outlined"></v-text-field>
+      <v-btn type="submit" append-icon="mdi-camera-outline">Ajouter</v-btn>
     </form>
   </v-sheet>
 
@@ -33,13 +33,6 @@ function resetFields () {
 </template>
 
 <style scoped>
-
-.mx-auto {
-  position: fixed;
-  left: 60px;
-  top: 410px;
-  width: 300px;
-}
 
 
 </style>
