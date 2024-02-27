@@ -41,6 +41,7 @@ function resetFields () {
       <br>
       <v-text-field v-model="picture" label="photo" variant="outlined"></v-text-field>
       <v-btn type="submit" append-icon="mdi-check">Ajouter</v-btn>
+      <v-btn append-icon="mdi-close" @click="$event => resetFields()">Annuler</v-btn>
     </form>
   </v-sheet>
 

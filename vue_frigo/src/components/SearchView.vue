@@ -12,6 +12,10 @@ function emitSearchProduct(search){
 
 watch(search,(newSearch)=>{emitSearchProduct(newSearch);})
 
+function resetFields () {
+  search.value = "";
+}
+
 </script>
 <template>
 
@@ -23,6 +27,7 @@ watch(search,(newSearch)=>{emitSearchProduct(newSearch);})
         <v-row>
           <v-text-field v-model="search" label="Rechercher" ></v-text-field>
           <v-btn icon="mdi-magnify" type="submit"></v-btn>
+          <v-btn icon="mdi-close" @click="$event => resetFields()"></v-btn>
       </v-row>
       </v-col>
 
